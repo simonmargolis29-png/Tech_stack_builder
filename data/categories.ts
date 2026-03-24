@@ -10,6 +10,21 @@ export const categories: Category[] = [
     toolIds: ['hubspot', 'salesforce', 'dynamics365', 'pipedrive', 'zoho_crm'],
     questions: [
       {
+        id: 'crm_current_tools',
+        categoryId: 'crm',
+        label: 'Which CRM tools are you currently using?',
+        type: 'multi_select',
+        options: [
+          { value: 'hubspot', label: 'HubSpot' },
+          { value: 'salesforce', label: 'Salesforce' },
+          { value: 'dynamics', label: 'Microsoft Dynamics' },
+          { value: 'pipedrive', label: 'Pipedrive' },
+          { value: 'zoho', label: 'Zoho CRM' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
+      {
         id: 'crm_use_case',
         categoryId: 'crm',
         label: 'What is the primary use case for your CRM?',
@@ -56,6 +71,22 @@ export const categories: Category[] = [
     toolIds: ['klaviyo', 'braze', 'mailchimp', 'sfmc', 'iterable', 'dotdigital', 'activecampaign'],
     questions: [
       {
+        id: 'esp_current_tools',
+        categoryId: 'esp_map',
+        label: 'Which email or marketing automation platforms are you currently using?',
+        type: 'multi_select',
+        options: [
+          { value: 'klaviyo', label: 'Klaviyo' },
+          { value: 'braze', label: 'Braze' },
+          { value: 'mailchimp', label: 'Mailchimp' },
+          { value: 'sfmc', label: 'Salesforce Marketing Cloud' },
+          { value: 'activecampaign', label: 'ActiveCampaign' },
+          { value: 'dotdigital', label: 'dotdigital' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
+      {
         id: 'esp_channel',
         categoryId: 'esp_map',
         label: 'What channels do you need to support?',
@@ -98,6 +129,12 @@ export const categories: Category[] = [
           { value: 'shared_ip', label: 'Shared IP (cost-effective)' },
           { value: 'dedicated_ip', label: 'Dedicated IP (brand control)' },
         ],
+        skipIf: {
+          questionId: 'esp_volume',
+          values: ['500k_5m', '5m_plus'],
+          autoAnswer: 'dedicated_ip',
+          autoAnswerLabel: 'Dedicated IP required at your send volume (500k+/mo)',
+        },
       },
     ],
   },
@@ -109,6 +146,21 @@ export const categories: Category[] = [
     icon: '🗄️',
     toolIds: ['snowflake', 'bigquery', 'redshift', 'databricks', 'azure_synapse'],
     questions: [
+      {
+        id: 'dw_current_tools',
+        categoryId: 'data_warehouse',
+        label: 'Do you currently use a data warehouse or analytics database?',
+        type: 'multi_select',
+        options: [
+          { value: 'snowflake', label: 'Snowflake' },
+          { value: 'bigquery', label: 'BigQuery (Google)' },
+          { value: 'redshift', label: 'Redshift (AWS)' },
+          { value: 'databricks', label: 'Databricks' },
+          { value: 'azure_synapse', label: 'Azure Synapse' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
       {
         id: 'dw_volume',
         categoryId: 'data_warehouse',
@@ -136,6 +188,7 @@ export const categories: Category[] = [
         categoryId: 'data_warehouse',
         label: 'Cloud provider preference?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'aws', label: 'AWS-native' },
           { value: 'gcp', label: 'GCP-native' },
@@ -165,6 +218,20 @@ export const categories: Category[] = [
     toolIds: ['aws', 'gcp', 'azure', 'digitalocean', 'cloudflare'],
     questions: [
       {
+        id: 'cloud_current_tools',
+        categoryId: 'cloud_infra',
+        label: 'Which cloud platforms are you currently using?',
+        type: 'multi_select',
+        options: [
+          { value: 'aws', label: 'Amazon Web Services (AWS)' },
+          { value: 'gcp', label: 'Google Cloud' },
+          { value: 'azure', label: 'Microsoft Azure' },
+          { value: 'digitalocean', label: 'DigitalOcean' },
+          { value: 'cloudflare', label: 'Cloudflare' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
+      {
         id: 'cloud_use_case',
         categoryId: 'cloud_infra',
         label: 'Primary infrastructure use case?',
@@ -182,6 +249,7 @@ export const categories: Category[] = [
         categoryId: 'cloud_infra',
         label: 'Existing cloud ecosystem?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'aws', label: 'AWS' },
           { value: 'gcp', label: 'Google Cloud' },
@@ -194,6 +262,7 @@ export const categories: Category[] = [
         categoryId: 'cloud_infra',
         label: 'Scale and availability requirements?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'static', label: 'Static / low traffic' },
           { value: 'variable', label: 'Variable / burst traffic' },
@@ -210,6 +279,20 @@ export const categories: Category[] = [
     icon: '🔗',
     toolIds: ['segment', 'mparticle', 'rudderstack', 'bloomreach', 'actioniq'],
     questions: [
+      {
+        id: 'cdp_current_tools',
+        categoryId: 'cdp',
+        label: 'Are you currently using a Customer Data Platform?',
+        type: 'multi_select',
+        options: [
+          { value: 'segment', label: 'Segment' },
+          { value: 'mparticle', label: 'mParticle' },
+          { value: 'bloomreach', label: 'Bloomreach' },
+          { value: 'rudderstack', label: 'RudderStack' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
       {
         id: 'cdp_purpose',
         categoryId: 'cdp',
@@ -241,6 +324,7 @@ export const categories: Category[] = [
         categoryId: 'cdp',
         label: 'Build or buy approach?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'buy_cdp', label: 'Buy a turnkey CDP' },
           { value: 'build_on_dw', label: 'Composable CDP on data warehouse' },
@@ -260,60 +344,6 @@ export const categories: Category[] = [
     ],
   },
   {
-    id: 'etl',
-    label: 'ETL / Data Pipeline / Integration',
-    shortLabel: 'ETL/Integration',
-    description: 'Move and transform data between systems and your data warehouse',
-    icon: '🔄',
-    toolIds: ['fivetran', 'airbyte', 'zapier', 'make', 'dbt'],
-    questions: [
-      {
-        id: 'etl_complexity',
-        categoryId: 'etl',
-        label: 'Integration complexity?',
-        type: 'single_select',
-        options: [
-          { value: 'point_to_point', label: 'Point-to-point (2–3 tools)' },
-          { value: 'multi_system', label: 'Multi-system (5+ tools)' },
-          { value: 'real_time_streaming', label: 'Real-time event streaming' },
-        ],
-      },
-      {
-        id: 'etl_tech',
-        categoryId: 'etl',
-        label: 'Technical resource available?',
-        type: 'single_select',
-        options: [
-          { value: 'no_code', label: 'No-code required' },
-          { value: 'low_code', label: 'Low-code acceptable' },
-          { value: 'engineering', label: 'Engineering team available' },
-        ],
-      },
-      {
-        id: 'etl_direction',
-        categoryId: 'etl',
-        label: 'Data flow direction?',
-        type: 'single_select',
-        options: [
-          { value: 'one_way', label: 'One-way sync (source → destination)' },
-          { value: 'bidirectional', label: 'Bi-directional sync' },
-          { value: 'event_streaming', label: 'Event streaming' },
-        ],
-      },
-      {
-        id: 'etl_latency',
-        categoryId: 'etl',
-        label: 'Data freshness requirement?',
-        type: 'single_select',
-        options: [
-          { value: 'batch', label: 'Batch (daily / hourly)' },
-          { value: 'near_realtime', label: 'Near real-time (minutes)' },
-          { value: 'realtime', label: 'Real-time (sub-second)' },
-        ],
-      },
-    ],
-  },
-  {
     id: 'bi_analytics',
     label: 'BI / Analytics & Reporting',
     shortLabel: 'BI/Analytics',
@@ -321,6 +351,21 @@ export const categories: Category[] = [
     icon: '📊',
     toolIds: ['power_bi', 'looker', 'tableau', 'metabase', 'sigma'],
     questions: [
+      {
+        id: 'bi_current_tools',
+        categoryId: 'bi_analytics',
+        label: 'Which analytics or reporting tools are you currently using?',
+        type: 'multi_select',
+        options: [
+          { value: 'power_bi', label: 'Power BI' },
+          { value: 'looker', label: 'Looker / Looker Studio' },
+          { value: 'tableau', label: 'Tableau' },
+          { value: 'metabase', label: 'Metabase' },
+          { value: 'google_analytics', label: 'Google Analytics' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
       {
         id: 'bi_audience',
         categoryId: 'bi_analytics',
@@ -348,62 +393,11 @@ export const categories: Category[] = [
         categoryId: 'bi_analytics',
         label: 'Is embedding in another platform needed?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'standalone', label: 'Standalone BI tool' },
           { value: 'embedded_portal', label: 'Embedded in client portal / app' },
           { value: 'white_labelled', label: 'Fully white-labelled' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'identity_auth',
-    label: 'Identity / Auth',
-    shortLabel: 'Identity/Auth',
-    description: 'Authentication, SSO, and identity management',
-    icon: '🔐',
-    toolIds: ['auth0', 'okta', 'cognito', 'azure_adb2c'],
-    questions: [
-      {
-        id: 'auth_use_case',
-        categoryId: 'identity_auth',
-        label: 'Primary identity use case?',
-        type: 'single_select',
-        options: [
-          { value: 'internal_sso', label: 'Internal staff SSO' },
-          { value: 'customer_login', label: 'Customer-facing login / registration' },
-          { value: 'partner_portal', label: 'Partner / B2B portal' },
-        ],
-      },
-      {
-        id: 'auth_protocols',
-        categoryId: 'identity_auth',
-        label: 'SSO protocols required?',
-        type: 'multi_select',
-        options: [
-          { value: 'saml', label: 'SAML 2.0' },
-          { value: 'oauth', label: 'OAuth 2.0' },
-          { value: 'oidc', label: 'OpenID Connect (OIDC)' },
-        ],
-      },
-      {
-        id: 'auth_mfa',
-        categoryId: 'identity_auth',
-        label: 'MFA requirement?',
-        type: 'single_select',
-        options: [
-          { value: 'optional', label: 'Optional / user-configurable' },
-          { value: 'mandatory', label: 'Mandatory for all users' },
-        ],
-      },
-      {
-        id: 'auth_compliance',
-        categoryId: 'identity_auth',
-        label: 'Compliance alignment needed?',
-        type: 'multi_select',
-        options: [
-          { value: 'soc2', label: 'SOC 2 Type II' },
-          { value: 'iso27001', label: 'ISO 27001' },
         ],
       },
     ],
@@ -416,6 +410,21 @@ export const categories: Category[] = [
     icon: '🌐',
     toolIds: ['wordpress', 'webflow', 'contentful', 'shopify', 'sanity'],
     questions: [
+      {
+        id: 'cms_current_tools',
+        categoryId: 'cms_web',
+        label: 'What platform powers your current website?',
+        type: 'multi_select',
+        options: [
+          { value: 'wordpress', label: 'WordPress' },
+          { value: 'webflow', label: 'Webflow' },
+          { value: 'contentful', label: 'Contentful' },
+          { value: 'shopify', label: 'Shopify' },
+          { value: 'squarespace', label: 'Squarespace / Wix' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
       {
         id: 'cms_type',
         categoryId: 'cms_web',
@@ -470,6 +479,21 @@ export const categories: Category[] = [
     toolIds: ['google_ads', 'meta_ads', 'dv360', 'the_trade_desk', 'linkedin_ads'],
     questions: [
       {
+        id: 'paid_current_tools',
+        categoryId: 'paid_media',
+        label: 'Which advertising platforms are you currently using?',
+        type: 'multi_select',
+        options: [
+          { value: 'google_ads', label: 'Google Ads' },
+          { value: 'meta_ads', label: 'Meta Ads' },
+          { value: 'linkedin_ads', label: 'LinkedIn Ads' },
+          { value: 'dv360', label: 'Display & Video 360' },
+          { value: 'trade_desk', label: 'The Trade Desk' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
+      {
         id: 'media_channels',
         categoryId: 'paid_media',
         label: 'Which channels will you activate?',
@@ -510,6 +534,7 @@ export const categories: Category[] = [
         categoryId: 'paid_media',
         label: 'Identity / data matching approach?',
         type: 'single_select',
+        minTechnicalLevel: 'semi_technical',
         options: [
           { value: 'hashed_email', label: 'Hashed email upload' },
           { value: 'liveramp', label: 'LiveRamp / identity graph' },
@@ -527,6 +552,20 @@ export const categories: Category[] = [
     icon: '🛡️',
     toolIds: ['onetrust', 'cookiebot', 'trustarc', 'osano'],
     questions: [
+      {
+        id: 'cmp_current_tools',
+        categoryId: 'cmp',
+        label: 'Are you currently using a consent or cookie management platform?',
+        type: 'multi_select',
+        options: [
+          { value: 'onetrust', label: 'OneTrust' },
+          { value: 'cookiebot', label: 'Cookiebot' },
+          { value: 'trustarc', label: 'TrustArc' },
+          { value: 'osano', label: 'Osano' },
+          { value: 'other', label: 'Other' },
+          { value: 'none', label: 'None / Starting fresh' },
+        ],
+      },
       {
         id: 'cmp_jurisdictions',
         categoryId: 'cmp',
@@ -548,39 +587,6 @@ export const categories: Category[] = [
           { value: 'banner_only', label: 'Cookie banner only' },
           { value: 'full_preference', label: 'Full preference centre' },
           { value: 'consent_signal', label: 'Consent signals to downstream systems (ad tech, analytics)' },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'ab_testing',
-    label: 'A/B Testing & Experimentation',
-    shortLabel: 'A/B Testing',
-    description: 'Feature flags, split testing, and experimentation',
-    icon: '🧪',
-    toolIds: ['optimizely', 'vwo', 'launchdarkly', 'statsig'],
-    questions: [
-      {
-        id: 'ab_use_case',
-        categoryId: 'ab_testing',
-        label: 'Primary experimentation use case?',
-        type: 'single_select',
-        options: [
-          { value: 'web', label: 'Web A/B testing (no-code)' },
-          { value: 'app', label: 'Mobile app testing' },
-          { value: 'feature_flags', label: 'Feature flag management' },
-          { value: 'full_stack', label: 'Full-stack / server-side testing' },
-        ],
-      },
-      {
-        id: 'ab_scale',
-        categoryId: 'ab_testing',
-        label: 'Scale of experimentation programme?',
-        type: 'single_select',
-        options: [
-          { value: 'startup_scale', label: 'Getting started (< 5 concurrent tests)' },
-          { value: 'mid_scale', label: 'Growing programme (5–20 concurrent)' },
-          { value: 'enterprise_scale', label: 'Enterprise (20+ concurrent, multiple teams)' },
         ],
       },
     ],

@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { ArrowRight, ArrowLeft } from 'lucide-react';
-import type { CategoryId, CategoryAnswers } from '@/types';
+import { useState, useEffect } from 'react';
+import { ArrowRight, ArrowLeft, Info } from 'lucide-react';
+import type { CategoryId, CategoryAnswers, UserTechnicalLevel } from '@/types';
 import { categories } from '@/data/categories';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { MultiToggleChip } from '@/components/ui/ToggleChip';
@@ -14,20 +14,54 @@ interface Step4QuestionsProps {
   onAnswer: (categoryId: CategoryId, questionId: string, value: string | string[]) => void;
   onNext: () => void;
   onBack: () => void;
+  userTechnicalLevel: UserTechnicalLevel | null;
 }
 
-function isCategoryComplete(categoryId: CategoryId, answers: CategoryAnswers): boolean {
+function isQuestionVisible(
+  question: { minTechnicalLevel?: 'semi_technical' | 'technical' },
+  userTechnicalLevel: UserTechnicalLevel | null
+): boolean {
+  if (!question.minTechnicalLevel) return true;
+  if (!userTechnicalLevel || userTechnicalLevel === 'technical') return true;
+  if (userTechnicalLevel === 'semi_technical') return question.minTechnicalLevel === 'semi_technical';
+  return false; // non_technical
+}
+
+function isCategoryComplete(
+  categoryId: CategoryId,
+  answers: CategoryAnswers,
+  userTechnicalLevel: UserTechnicalLevel | null
+): boolean {
   const cat = categories.find((c) => c.id === categoryId);
   if (!cat) return false;
   const catAnswers = answers[categoryId] ?? {};
   return cat.questions.every((q) => {
+    // Skip tech-level-filtered questions
+    if (!isQuestionVisible(q, userTechnicalLevel)) return true;
     const a = catAnswers[q.id];
-    if (!a) return false;
-    return Array.isArray(a) ? a.length > 0 : a !== '';
+    if (a && (Array.isArray(a) ? a.length > 0 : a !== '')) return true;
+    if (q.skipIf) {
+      const depAnswer = catAnswers[q.skipIf.questionId];
+      const depValues = Array.isArray(depAnswer) ? depAnswer : depAnswer ? [depAnswer] : [];
+      if (depValues.some(v => q.skipIf!.values.includes(v))) return true;
+    }
+    return false;
   });
 }
 
-export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, onBack }: Step4QuestionsProps) {
+function shouldSkipQuestion(
+  question: { skipIf?: { questionId: string; values: string[]; autoAnswer: string } },
+  catAnswers: Record<string, string | string[]>
+): boolean {
+  if (!question.skipIf) return false;
+  const depAnswer = catAnswers[question.skipIf.questionId];
+  const depValues = Array.isArray(depAnswer) ? depAnswer : depAnswer ? [depAnswer] : [];
+  return depValues.some(v => question.skipIf!.values.includes(v));
+}
+
+const DONT_KNOW = 'dont_know';
+
+export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, onBack, userTechnicalLevel }: Step4QuestionsProps) {
   const [activeCatIndex, setActiveCatIndex] = useState(0);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [questionDirection, setQuestionDirection] = useState<'forward' | 'back'>('forward');
@@ -36,19 +70,54 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
   const activeCatId = selectedCategories[activeCatIndex];
   const activeCategory = categories.find((c) => c.id === activeCatId)!;
   const catAnswers = answers[activeCatId] ?? {};
-  const isLastCategory = activeCatIndex === selectedCategories.length - 1;
-  const question = activeCategory.questions[activeQuestionIndex];
-  const isLastQuestion = activeQuestionIndex === activeCategory.questions.length - 1;
 
-  // Current question answer (always treated as multi-select)
-  const currentAnswer = (catAnswers[question.id] as string[]) ?? [];
+  // Visible questions = not skipIf-skipped AND meets tech level requirement
+  const visibleQuestions = activeCategory.questions.filter(
+    q => !shouldSkipQuestion(q, catAnswers) && isQuestionVisible(q, userTechnicalLevel)
+  );
+
+  // Auto-set answers for any questions that should be conditionally skipped
+  useEffect(() => {
+    activeCategory.questions.forEach(q => {
+      if (q.skipIf && shouldSkipQuestion(q, catAnswers)) {
+        const currentVal = catAnswers[q.id] as string[] | undefined;
+        if (!currentVal || !currentVal.includes(q.skipIf.autoAnswer)) {
+          onAnswer(activeCatId, q.id, [q.skipIf.autoAnswer]);
+        }
+      }
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeCatId, JSON.stringify(catAnswers)]);
+
+  const safeQuestionIndex = Math.min(activeQuestionIndex, Math.max(0, visibleQuestions.length - 1));
+  const question = visibleQuestions[safeQuestionIndex];
+  const isLastCategory = activeCatIndex === selectedCategories.length - 1;
+  const isLastQuestion = safeQuestionIndex === visibleQuestions.length - 1;
+
+  const skippedQuestion = activeCategory.questions.find(
+    q => q.skipIf && shouldSkipQuestion(q, catAnswers)
+  );
+
+  const currentAnswer = question ? ((catAnswers[question.id] as string[]) ?? []) : [];
   const hasAnswer = currentAnswer.length > 0;
+  const isCurrentToolsQuestion = question?.id.startsWith('current_tools_') ||
+    question?.id.includes('_current_tools');
 
   function handleToggle(value: string) {
-    const next = currentAnswer.includes(value)
-      ? currentAnswer.filter(v => v !== value)
-      : [...currentAnswer, value];
-    onAnswer(activeCatId, question.id, next);
+    if (!question) return;
+    if (question.type === 'single_select') {
+      onAnswer(activeCatId, question.id, [value]);
+    } else {
+      const next = currentAnswer.includes(value)
+        ? currentAnswer.filter(v => v !== value)
+        : [...currentAnswer, value];
+      onAnswer(activeCatId, question.id, next);
+    }
+  }
+
+  function handleSkip() {
+    if (!question) return;
+    onAnswer(activeCatId, question.id, [DONT_KNOW]);
   }
 
   function handleNext() {
@@ -70,15 +139,18 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
   }
 
   function handleBack() {
-    if (activeQuestionIndex > 0) {
+    if (safeQuestionIndex > 0) {
       setQuestionDirection('back');
       setAnimKey(k => k + 1);
       setActiveQuestionIndex(i => i - 1);
     } else if (activeCatIndex > 0) {
       const prevCatId = selectedCategories[activeCatIndex - 1];
       const prevCat = categories.find(c => c.id === prevCatId)!;
+      const prevVisible = prevCat.questions.filter(
+        q => !shouldSkipQuestion(q, answers[prevCatId] ?? {}) && isQuestionVisible(q, userTechnicalLevel)
+      );
       setActiveCatIndex(i => i - 1);
-      setActiveQuestionIndex(prevCat.questions.length - 1);
+      setActiveQuestionIndex(Math.max(0, prevVisible.length - 1));
       setQuestionDirection('back');
       setAnimKey(k => k + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -93,12 +165,14 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
       : 'slideRight 0.35s cubic-bezier(0.16,1,0.3,1) both',
   };
 
-  // Count answered questions in current category
-  const answeredInCat = activeCategory.questions.filter(q => {
+  const answeredInCat = visibleQuestions.filter(q => {
     const a = catAnswers[q.id];
-    if (!a) return false;
-    return Array.isArray(a) ? a.length > 0 : a !== '';
+    return a && (Array.isArray(a) ? a.length > 0 : a !== '');
   }).length;
+
+  if (!question) return null;
+
+  const isDontKnow = currentAnswer.includes(DONT_KNOW);
 
   return (
     <div className="max-w-2xl mx-auto" style={{ animation: 'slideLeft 0.4s cubic-bezier(0.16,1,0.3,1) both' }}>
@@ -114,11 +188,11 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
               className="rounded-full transition-all duration-300"
               style={{
                 height: 4,
-                width: idx === activeCatIndex ? 28 : isCategoryComplete(catId, answers) ? 14 : 8,
+                width: idx === activeCatIndex ? 28 : isCategoryComplete(catId, answers, userTechnicalLevel) ? 14 : 8,
                 background:
                   idx === activeCatIndex
                     ? 'linear-gradient(90deg, #2e7040, #4ade80)'
-                    : isCategoryComplete(catId, answers)
+                    : isCategoryComplete(catId, answers, userTechnicalLevel)
                     ? 'rgba(46,112,64,0.5)'
                     : 'rgba(255,255,255,0.08)',
                 boxShadow: idx === activeCatIndex ? '0 0 6px rgba(74,222,128,0.4)' : 'none',
@@ -149,24 +223,36 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
             <div
               className="h-full rounded-full transition-all duration-500"
               style={{
-                width: `${(answeredInCat / activeCategory.questions.length) * 100}%`,
+                width: `${(answeredInCat / visibleQuestions.length) * 100}%`,
                 background: 'linear-gradient(90deg, #2e7040, #4ade80)',
                 boxShadow: '0 0 6px rgba(74,222,128,0.4)',
               }}
             />
           </div>
           <span className="text-xs" style={{ color: 'rgba(120,100,90,0.6)' }}>
-            {answeredInCat}/{activeCategory.questions.length}
+            {answeredInCat}/{visibleQuestions.length}
           </span>
         </div>
       </div>
 
+      {/* Auto-set notice */}
+      {skippedQuestion?.skipIf && (
+        <div
+          className="flex items-start gap-3 px-4 py-3 rounded-xl mb-4"
+          style={{
+            background: 'rgba(46,112,64,0.08)',
+            border: '1px solid rgba(46,112,64,0.25)',
+          }}
+        >
+          <Info size={14} className="mt-0.5 flex-shrink-0" style={{ color: '#4ade80' }} />
+          <p className="text-xs leading-relaxed" style={{ color: 'rgba(74,222,128,0.8)' }}>
+            <strong>IP type auto-selected:</strong> {skippedQuestion.skipIf.autoAnswerLabel}
+          </p>
+        </div>
+      )}
+
       {/* Question card */}
-      <div
-        key={animKey}
-        style={slideStyle}
-        className="glass-card p-6 sm:p-8"
-      >
+      <div key={animKey} style={slideStyle} className="glass-card p-6 sm:p-8">
         {/* Question number badge + dots */}
         <div className="flex items-center justify-between mb-6">
           <span
@@ -178,26 +264,26 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
               letterSpacing: '0.05em',
             }}
           >
-            {activeQuestionIndex + 1} / {activeCategory.questions.length}
+            {safeQuestionIndex + 1} / {visibleQuestions.length}
           </span>
           {/* Progress dots */}
           <div className="flex items-center gap-1.5">
-            {activeCategory.questions.map((q, i) => {
+            {visibleQuestions.map((q, i) => {
               const answered = ((catAnswers[q.id] as string[]) ?? []).length > 0;
               return (
                 <div
                   key={q.id}
                   className="rounded-full transition-all duration-300"
                   style={{
-                    width: i === activeQuestionIndex ? 20 : 6,
+                    width: i === safeQuestionIndex ? 20 : 6,
                     height: 6,
                     background:
-                      i === activeQuestionIndex
+                      i === safeQuestionIndex
                         ? 'linear-gradient(90deg, #2e7040, #4ade80)'
                         : answered
                         ? 'rgba(46,112,64,0.5)'
                         : 'rgba(255,255,255,0.1)',
-                    boxShadow: i === activeQuestionIndex ? '0 0 6px rgba(74,222,128,0.4)' : 'none',
+                    boxShadow: i === safeQuestionIndex ? '0 0 6px rgba(74,222,128,0.4)' : 'none',
                   }}
                 />
               );
@@ -210,26 +296,50 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
           {question.label}
         </h3>
         <p className="text-sm mb-6" style={{ color: 'rgba(168,144,128,0.6)' }}>
-          Select all that apply
+          {isCurrentToolsQuestion
+            ? 'Select all that apply — helps us understand your migration context'
+            : question.type === 'single_select'
+            ? 'Select one'
+            : 'Select all that apply'}
         </p>
 
-        {/* Options */}
-        <div className="flex flex-wrap gap-2.5">
-          {question.options.map((opt) => (
-            <MultiToggleChip
-              key={opt.value}
-              label={opt.label}
-              selected={currentAnswer.includes(opt.value)}
-              onClick={() => handleToggle(opt.value)}
-            />
-          ))}
-        </div>
+        {/* Skipped / Don't know state */}
+        {isDontKnow ? (
+          <div
+            className="flex items-center justify-between px-4 py-3 rounded-xl mb-4"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+            }}
+          >
+            <span className="text-sm" style={{ color: 'rgba(168,144,128,0.7)' }}>Skipped / Don&apos;t know</span>
+            <button
+              onClick={() => onAnswer(activeCatId, question.id, [])}
+              className="text-xs underline"
+              style={{ color: 'rgba(74,222,128,0.7)' }}
+            >
+              Answer instead
+            </button>
+          </div>
+        ) : (
+          /* Options */
+          <div className="flex flex-wrap gap-2.5">
+            {question.options.map((opt) => (
+              <MultiToggleChip
+                key={opt.value}
+                label={opt.label}
+                selected={currentAnswer.includes(opt.value)}
+                onClick={() => handleToggle(opt.value)}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Card actions */}
         <div className="flex gap-3 mt-8">
           <Button variant="secondary" onClick={handleBack}>
             <ArrowLeft size={15} />
-            {activeCatIndex === 0 && activeQuestionIndex === 0 ? 'Back' : 'Previous'}
+            {activeCatIndex === 0 && safeQuestionIndex === 0 ? 'Back' : 'Previous'}
           </Button>
           <Button
             onClick={handleNext}
@@ -248,6 +358,21 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
             )}
           </Button>
         </div>
+
+        {/* Skip link */}
+        {!isDontKnow && (
+          <div className="text-center mt-3">
+            <button
+              onClick={handleSkip}
+              className="text-xs transition-colors duration-150"
+              style={{ color: 'rgba(120,100,90,0.5)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = 'rgba(120,100,90,0.9)')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(120,100,90,0.5)')}
+            >
+              Skip / Don&apos;t know
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

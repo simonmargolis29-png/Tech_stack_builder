@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import type { WizardStep, WizardState, GlobalFilters, CategoryId, CategoryAnswers, WizardResults } from '@/types';
+import type { WizardStep, WizardState, GlobalFilters, CategoryId, CategoryAnswers, WizardResults, UserTechnicalLevel } from '@/types';
 import { generateResults } from '@/lib/recommendations';
 import { StepIndicator } from './StepIndicator';
 import { Step1Welcome } from './Step1Welcome';
@@ -25,6 +25,7 @@ const initialState: WizardState = {
   selectedCategories: [],
   categoryAnswers: {},
   activeCategoryIndex: 0,
+  userTechnicalLevel: null,
 };
 
 export function WizardShell() {
@@ -39,6 +40,10 @@ export function WizardShell() {
 
   const markStepComplete = useCallback((step: WizardStep) => {
     setCompletedSteps((prev) => (prev.includes(step) ? prev : [...prev, step]));
+  }, []);
+
+  const setUserTechnicalLevel = useCallback((level: UserTechnicalLevel) => {
+    setState(prev => ({ ...prev, userTechnicalLevel: level }));
   }, []);
 
   const toggleGlobalFilter = useCallback((key: keyof GlobalFilters, value: string) => {
@@ -170,6 +175,8 @@ export function WizardShell() {
             onChange={toggleGlobalFilter}
             onNext={() => { markStepComplete(2); goToStep(3); }}
             onBack={() => goToStep(1)}
+            userTechnicalLevel={state.userTechnicalLevel}
+            onSetTechnicalLevel={setUserTechnicalLevel}
           />
         )}
         {currentStep === 3 && (
@@ -187,6 +194,7 @@ export function WizardShell() {
             onAnswer={setCategoryAnswer}
             onNext={handleGenerateResults}
             onBack={() => goToStep(3)}
+            userTechnicalLevel={state.userTechnicalLevel}
           />
         )}
         {currentStep === 5 && results && (

@@ -1,3 +1,7 @@
+// ─── Technical Level ───────────────────────────────────────────────────────────
+
+export type UserTechnicalLevel = 'non_technical' | 'semi_technical' | 'technical';
+
 // ─── Global Filter Types ───────────────────────────────────────────────────────
 
 export type BudgetTier = 'startup' | 'smb' | 'midmarket' | 'enterprise';
@@ -57,6 +61,15 @@ export interface Question {
   label: string;
   type: QuestionType;
   options: QuestionOption[];
+  // If defined, this question is skipped and auto-answered when the referenced question's answer contains one of the values
+  skipIf?: {
+    questionId: string;
+    values: string[];
+    autoAnswer: string;
+    autoAnswerLabel: string;
+  };
+  // If set, only shown for users at this technical level or above
+  minTechnicalLevel?: 'semi_technical' | 'technical';
 }
 
 // ─── Tool Types ────────────────────────────────────────────────────────────────
@@ -103,6 +116,7 @@ export interface WizardState {
   selectedCategories: CategoryId[];
   categoryAnswers: CategoryAnswers;
   activeCategoryIndex: number; // used within step 4
+  userTechnicalLevel: UserTechnicalLevel | null;
 }
 
 // ─── Result Types ──────────────────────────────────────────────────────────────

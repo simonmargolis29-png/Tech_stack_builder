@@ -95,11 +95,14 @@ export function scoreTool(
     if (!answer) continue;
 
     if (Array.isArray(answer)) {
+      // Skip dont_know (skipped questions) — treat as neutral
+      if (answer.includes('dont_know')) continue;
       // multi-select: sum up bonuses for each selected value
       for (const val of answer) {
         score += answerBonuses[val] ?? 0;
       }
     } else {
+      if (answer === 'dont_know') continue;
       score += answerBonuses[answer] ?? 0;
     }
   }
