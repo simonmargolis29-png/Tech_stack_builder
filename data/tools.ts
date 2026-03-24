@@ -8,7 +8,7 @@ export const tools: Tool[] = [
     categoryId: 'crm',
     website: 'hubspot.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Free → £1,400/mo (Pro)',
+    pricingLabel: 'Free CRM; paid from £45/mo — scales with contact count & feature tier',
     pros: [
       'All-in-one marketing + sales + service hub',
       'Excellent free tier for getting started',
@@ -38,7 +38,7 @@ export const tools: Tool[] = [
     categoryId: 'crm',
     website: 'salesforce.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '£75/user/mo → Enterprise custom',
+    pricingLabel: 'From £75/user/mo — scales with seat count & edition',
     pros: [
       'Most comprehensive CRM on the market',
       'Highly customisable with custom objects',
@@ -68,7 +68,7 @@ export const tools: Tool[] = [
     categoryId: 'crm',
     website: 'microsoft.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '£65/user/mo → Enterprise custom',
+    pricingLabel: 'From £65/user/mo — scales with seat count & modules selected',
     pros: [
       'Deep Microsoft 365 / Azure integration',
       'Strong in B2B and enterprise environments',
@@ -98,7 +98,7 @@ export const tools: Tool[] = [
     categoryId: 'crm',
     website: 'pipedrive.com',
     pricingBand: 'under_500',
-    pricingLabel: '£14/user/mo → £99/user/mo',
+    pricingLabel: 'From £14/user/mo — scales with seat count & plan tier',
     pros: [
       'Extremely intuitive pipeline-focused UI',
       'Fast to set up — live in hours not weeks',
@@ -128,7 +128,7 @@ export const tools: Tool[] = [
     categoryId: 'crm',
     website: 'zoho.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → £52/user/mo',
+    pricingLabel: 'Free up to 3 users; from £14/user/mo — scales with seat count',
     pros: [
       'Best price-to-feature ratio for SMBs',
       'Part of the broader Zoho suite (email, finance, HR)',
@@ -160,7 +160,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'klaviyo.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → usage-based (~£150/mo for 10k)',
+    pricingLabel: 'Free up to 250 contacts; scales with list size (~£150/mo per 10k contacts)',
     pros: [
       'Best-in-class segmentation and personalisation',
       'Native Shopify / e-commerce data model',
@@ -190,7 +190,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'braze.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £80k–£300k/yr',
+    pricingLabel: 'Custom contract; scales with Monthly Active Users — typically £80k–£300k+/yr',
     pros: [
       'Best cross-channel orchestration (email, push, SMS, in-app)',
       'Real-time event streaming and personalisation',
@@ -220,7 +220,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'mailchimp.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → £300/mo (Standard)',
+    pricingLabel: 'Free up to 500 contacts; scales with list size (~£300/mo per 50k contacts)',
     pros: [
       'Very easy to use — no technical skills required',
       'Strong template library and drag-and-drop editor',
@@ -250,7 +250,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'salesforce.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £150k–£500k+/yr',
+    pricingLabel: 'Custom; scales with contact count & send volume — typically £150k–£500k+/yr',
     pros: [
       'Tightest integration with Salesforce CRM ecosystem',
       'Journey Builder for complex multi-touch automation',
@@ -281,7 +281,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'iterable.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: 'Custom — typically £2k–£15k/mo',
+    pricingLabel: 'Custom; scales with Monthly Active Users — typically £2k–£15k+/mo',
     pros: [
       'Flexible cross-channel (email, SMS, push, in-app)',
       'Powerful workflow / journey builder',
@@ -311,7 +311,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'dotdigital.com',
     pricingBand: '500_to_2k',
-    pricingLabel: '£250 – £2,000/mo',
+    pricingLabel: 'From ~£250/mo; scales with contact count & monthly send volume',
     pros: [
       'UK-based, strong GDPR compliance track record',
       'Good mid-market price point',
@@ -341,7 +341,7 @@ export const tools: Tool[] = [
     categoryId: 'esp_map',
     website: 'activecampaign.com',
     pricingBand: 'under_500',
-    pricingLabel: '£29 – £500/mo',
+    pricingLabel: 'From £29/mo; scales with contact count (~£200/mo per 10k contacts)',
     pros: [
       'Best-in-class automation for the price point',
       'CRM and email in one (good HubSpot alternative)',
@@ -373,7 +373,7 @@ export const tools: Tool[] = [
     categoryId: 'data_warehouse',
     website: 'snowflake.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: 'Usage-based — ~£1,500–£15k/mo',
+    pricingLabel: 'Usage-based; scales with compute credits & storage — typically £1.5k–£15k+/mo',
     pros: [
       'Cloud-agnostic (AWS, GCP, Azure)',
       'Near-infinite scale with auto-suspend/resume',
@@ -435,7 +435,7 @@ export const tools: Tool[] = [
     categoryId: 'data_warehouse',
     website: 'aws.amazon.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '~£0.25/node-hr — £500–£8k/mo',
+    pricingLabel: 'Serverless from ~£0.50/RPU-hr; scales with query compute & data volume',
     pros: [
       'Deep AWS ecosystem integration (S3, Lambda, Glue)',
       'Redshift Serverless option for smaller workloads',
@@ -466,7 +466,7 @@ export const tools: Tool[] = [
     categoryId: 'data_warehouse',
     website: 'databricks.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £5k–£50k/mo',
+    pricingLabel: 'Usage-based DBUs; scales with compute & data volume — typically £5k–£50k+/mo',
     pros: [
       'Unified analytics and ML platform (Lakehouse)',
       'Best for data science and ML-heavy teams',
@@ -497,7 +497,7 @@ export const tools: Tool[] = [
     categoryId: 'data_warehouse',
     website: 'azure.microsoft.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: 'Usage-based — ~£2k–£20k/mo',
+    pricingLabel: 'Usage-based; scales with compute & data processed — typically £2k–£20k+/mo',
     pros: [
       'Deep Microsoft ecosystem integration (Power BI, Teams)',
       'Unified SQL + Spark in one workspace',
@@ -530,7 +530,7 @@ export const tools: Tool[] = [
     categoryId: 'cloud_infra',
     website: 'aws.amazon.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Usage-based — varies widely',
+    pricingLabel: 'Usage-based; scales with compute, storage & data transfer',
     pros: [
       'Largest service catalogue in the industry',
       'Dominant market share — best community/talent pool',
@@ -560,7 +560,7 @@ export const tools: Tool[] = [
     categoryId: 'cloud_infra',
     website: 'cloud.google.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Usage-based — varies widely',
+    pricingLabel: 'Usage-based; scales with compute, storage & data transfer',
     pros: [
       'Best data and ML services (BigQuery, Vertex AI)',
       'Tight Google Workspace integration',
@@ -590,7 +590,7 @@ export const tools: Tool[] = [
     categoryId: 'cloud_infra',
     website: 'azure.microsoft.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Usage-based — varies widely',
+    pricingLabel: 'Usage-based; scales with compute, storage & data transfer',
     pros: [
       'Best for Microsoft-heavy enterprises',
       'Hybrid cloud and on-premise options',
@@ -681,7 +681,7 @@ export const tools: Tool[] = [
     categoryId: 'cdp',
     website: 'segment.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: 'Free → £120k+/yr (Business)',
+    pricingLabel: 'Free up to 1k sources; scales with Monthly Tracked Users — custom enterprise pricing',
     pros: [
       'Most widely integrated CDP — 400+ destinations',
       'Clean event-based data model',
@@ -711,7 +711,7 @@ export const tools: Tool[] = [
     categoryId: 'cdp',
     website: 'mparticle.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £150k–£400k/yr',
+    pricingLabel: 'Custom; scales with MAU & event volume — typically £150k–£400k+/yr',
     pros: [
       'Best mobile-first CDP for app-heavy products',
       'Very strong identity resolution',
@@ -741,7 +741,7 @@ export const tools: Tool[] = [
     categoryId: 'cdp',
     website: 'rudderstack.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Open source free → £750/mo (Cloud)',
+    pricingLabel: 'Open source free; cloud scales with event volume — from £750/mo',
     pros: [
       'Open source — full data control, no vendor lock-in',
       'Self-hostable on your own cloud',
@@ -771,7 +771,7 @@ export const tools: Tool[] = [
     categoryId: 'cdp',
     website: 'bloomreach.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £60k–£200k/yr',
+    pricingLabel: 'Custom; scales with MAU & customer profiles — typically £60k–£200k/yr',
     pros: [
       'CDP + personalisation + search in one platform',
       'Strong e-commerce and retail focus',
@@ -801,7 +801,7 @@ export const tools: Tool[] = [
     categoryId: 'cdp',
     website: 'actioniq.com',
     pricingBand: 'custom_enterprise',
-    pricingLabel: 'Custom enterprise pricing',
+    pricingLabel: 'Custom; scales with MAU & data volume — enterprise contracts typically £150k+/yr',
     pros: [
       'Self-serve segmentation for non-technical marketers',
       'Real-time data activation across all channels',
@@ -832,7 +832,7 @@ export const tools: Tool[] = [
     categoryId: 'etl',
     website: 'fivetran.com',
     pricingBand: '500_to_2k',
-    pricingLabel: '£400 – £5,000+/mo (MAR-based)',
+    pricingLabel: 'Scales with Monthly Active Rows synced — from ~£400/mo; large stacks £3k–£5k+/mo',
     pros: [
       'Fully managed — zero-maintenance connectors',
       '500+ pre-built connectors',
@@ -863,7 +863,7 @@ export const tools: Tool[] = [
     categoryId: 'etl',
     website: 'airbyte.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Open source free → Cloud from £200/mo',
+    pricingLabel: 'Open source free (self-hosted); Cloud scales with rows synced — from £200/mo',
     pros: [
       'Open source — self-host or use Cloud',
       '350+ connectors with custom connector SDK',
@@ -894,7 +894,7 @@ export const tools: Tool[] = [
     categoryId: 'etl',
     website: 'zapier.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → £79/mo (Professional)',
+    pricingLabel: 'Free (100 tasks/mo); scales with task volume — from £19/mo; heavy usage £79–£400+/mo',
     pros: [
       'No code required — marketers can build integrations',
       '6,000+ app integrations',
@@ -924,7 +924,7 @@ export const tools: Tool[] = [
     categoryId: 'etl',
     website: 'make.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → £16/mo (Pro)',
+    pricingLabel: 'Free (1k operations/mo); scales with operations — from £9/mo; heavy usage £16–£65+/mo',
     pros: [
       'Visual scenario builder — no code needed',
       'More powerful than Zapier for complex flows',
@@ -954,7 +954,7 @@ export const tools: Tool[] = [
     categoryId: 'etl',
     website: 'getdbt.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Open source free → dbt Cloud from £50/mo',
+    pricingLabel: 'Open source free; dbt Cloud scales with developer seats — from £50/mo per seat',
     pros: [
       'Industry-standard for SQL transformations in DW',
       'Version-controlled, tested, documented data models',
@@ -987,7 +987,7 @@ export const tools: Tool[] = [
     categoryId: 'bi_analytics',
     website: 'powerbi.microsoft.com',
     pricingBand: 'under_500',
-    pricingLabel: '£9/user/mo (Pro) → £4,995/mo (Premium)',
+    pricingLabel: '£9/user/mo (Pro); scales with seat count — Premium capacity £4,995/mo flat',
     pros: [
       'Best price/performance for Microsoft-centric orgs',
       'Included in Microsoft 365 E3/E5 licences',
@@ -1017,7 +1017,7 @@ export const tools: Tool[] = [
     categoryId: 'bi_analytics',
     website: 'looker.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £60k–£200k/yr',
+    pricingLabel: 'Custom; scales with user seats & data queries — typically £60k–£200k/yr',
     pros: [
       'LookML semantic layer is industry-leading',
       'Embedded analytics for client-facing portals',
@@ -1047,7 +1047,7 @@ export const tools: Tool[] = [
     categoryId: 'bi_analytics',
     website: 'tableau.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '£70/user/mo → Enterprise custom',
+    pricingLabel: '£70/user/mo (Creator); scales with seat count — Viewer licences from £15/user/mo',
     pros: [
       'Best visual analytics and data exploration',
       'Salesforce Einstein AI integration',
@@ -1077,7 +1077,7 @@ export const tools: Tool[] = [
     categoryId: 'bi_analytics',
     website: 'metabase.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Open source free → £500/mo (Pro Cloud)',
+    pricingLabel: 'Open source free (self-hosted); Cloud scales with users — from £500/mo (Pro)',
     pros: [
       'Extremely easy to use — non-technical teams can explore data',
       'Open source — self-host or use cloud',
@@ -1107,7 +1107,7 @@ export const tools: Tool[] = [
     categoryId: 'bi_analytics',
     website: 'sigmacomputing.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: 'Custom — ~£1,500–£8k/mo',
+    pricingLabel: 'Custom; scales with user seats & query volume — typically £1,500–£8k+/mo',
     pros: [
       'Spreadsheet-like interface for non-technical users with SQL power',
       'Live query to DW — no extract needed',
@@ -1291,7 +1291,7 @@ export const tools: Tool[] = [
     categoryId: 'cms_web',
     website: 'webflow.com',
     pricingBand: 'under_500',
-    pricingLabel: '£39 – £235/mo',
+    pricingLabel: 'From £39/mo; scales with site plan — higher tiers unlock bandwidth & CMS items',
     pros: [
       'No-code visual builder with pixel-perfect control',
       'Built-in CMS for structured content',
@@ -1321,7 +1321,7 @@ export const tools: Tool[] = [
     categoryId: 'cms_web',
     website: 'contentful.com',
     pricingBand: '500_to_2k',
-    pricingLabel: 'Free → £1,600/mo (Team)',
+    pricingLabel: 'Free tier available; scales with API calls, users & spaces — Team from £1,600/mo',
     pros: [
       'API-first headless CMS — framework-agnostic',
       'Structured content model for omnichannel delivery',
@@ -1351,7 +1351,7 @@ export const tools: Tool[] = [
     categoryId: 'cms_web',
     website: 'shopify.com',
     pricingBand: 'under_500',
-    pricingLabel: '£25 – £344/mo + transaction fees',
+    pricingLabel: 'From £25/mo; scales with plan & sales volume — transaction fees 0.5–2% depending on plan',
     pros: [
       'Best-in-class e-commerce platform',
       'Huge app store ecosystem',
@@ -1381,7 +1381,7 @@ export const tools: Tool[] = [
     categoryId: 'cms_web',
     website: 'sanity.io',
     pricingBand: 'under_500',
-    pricingLabel: 'Free → £700/mo (Team)',
+    pricingLabel: 'Free tier available; scales with API requests & dataset size — Team from £700/mo',
     pros: [
       'Fully customisable Studio editing experience',
       'Real-time collaboration on content',
@@ -1564,7 +1564,7 @@ export const tools: Tool[] = [
     categoryId: 'cmp',
     website: 'onetrust.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '£3k–£30k+/yr depending on scope',
+    pricingLabel: 'From £3k/yr; scales with number of domains, modules & jurisdictions — enterprise £30k+/yr',
     pros: [
       'Market-leading privacy and consent management platform',
       'Covers GDPR, CCPA, PDPL and 160+ data privacy laws',
@@ -1593,7 +1593,7 @@ export const tools: Tool[] = [
     categoryId: 'cmp',
     website: 'cookiebot.com',
     pricingBand: 'under_500',
-    pricingLabel: '£12 – £280/mo',
+    pricingLabel: 'From £12/mo; scales with number of domains — up to £280/mo for larger site portfolios',
     pros: [
       'Very easy to deploy — Google Tag Manager friendly',
       'Automatic cookie scanning and categorisation',
@@ -1622,7 +1622,7 @@ export const tools: Tool[] = [
     categoryId: 'cmp',
     website: 'trustarc.com',
     pricingBand: '2k_to_10k',
-    pricingLabel: '£5k–£40k/yr',
+    pricingLabel: 'From £5k/yr; scales with jurisdictions & compliance modules — enterprise £40k+/yr',
     pros: [
       'Strong in US market — CCPA and US state law focus',
       'Privacy risk assessments and compliance workflows',
@@ -1651,7 +1651,7 @@ export const tools: Tool[] = [
     categoryId: 'cmp',
     website: 'osano.com',
     pricingBand: 'under_500',
-    pricingLabel: '£99 – £1,000+/mo',
+    pricingLabel: 'From £99/mo; scales with number of domains & users — larger programmes £1,000+/mo',
     pros: [
       'Transparent vendor monitoring — scores 10,000+ vendors',
       'Simple consent management with no legal jargon',
@@ -1682,7 +1682,7 @@ export const tools: Tool[] = [
     categoryId: 'ab_testing',
     website: 'optimizely.com',
     pricingBand: '10k_plus',
-    pricingLabel: 'Custom — typically £60k–£200k/yr',
+    pricingLabel: 'Custom; scales with monthly visitors & experiments — typically £60k–£200k/yr',
     pros: [
       'Most mature web and full-stack experimentation platform',
       'Feature flags, A/B, multi-variate, and personalisation',
@@ -1711,7 +1711,7 @@ export const tools: Tool[] = [
     categoryId: 'ab_testing',
     website: 'vwo.com',
     pricingBand: '500_to_2k',
-    pricingLabel: '£199 – £2,000+/mo',
+    pricingLabel: 'From £199/mo; scales with monthly tested visitors — larger traffic £2,000+/mo',
     pros: [
       'Strong web testing with heatmaps and session recordings',
       'Good price for mid-market',
@@ -1740,7 +1740,7 @@ export const tools: Tool[] = [
     categoryId: 'ab_testing',
     website: 'launchdarkly.com',
     pricingBand: '500_to_2k',
-    pricingLabel: '£10/seat/mo → Enterprise custom',
+    pricingLabel: 'From £10/seat/mo; scales with seat count & MAU — enterprise plans custom',
     pros: [
       'Industry-standard feature flag management',
       'Safe deployment with targeted rollouts',
@@ -1769,7 +1769,7 @@ export const tools: Tool[] = [
     categoryId: 'ab_testing',
     website: 'statsig.com',
     pricingBand: 'under_500',
-    pricingLabel: 'Free (1M events) → usage-based',
+    pricingLabel: 'Free up to 1M events/mo; usage-based above that — scales with event volume',
     pros: [
       'Modern, developer-first experimentation platform',
       'Warehouse-native — data stays in your stack',
