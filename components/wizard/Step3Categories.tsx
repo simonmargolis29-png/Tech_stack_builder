@@ -106,7 +106,7 @@ export function Step3Categories({ selected, onToggle, onNext, onBack }: Step3Cat
                           onMouseEnter={() => setActiveTooltip(cat.id)}
                           onMouseLeave={() => setActiveTooltip(null)}
                           className="flex-shrink-0 flex items-center justify-center rounded-full transition-colors duration-150"
-                          style={{ color: isTooltipOpen ? '#4ade80' : 'rgba(120,100,90,0.5)' }}
+                          style={{ color: '#4ade80' }}
                           aria-label={`What is ${cat.label}?`}
                         >
                           <Info size={13} />
