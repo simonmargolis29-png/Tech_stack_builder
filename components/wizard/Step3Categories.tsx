@@ -44,8 +44,8 @@ export function Step3Categories({ selected, onToggle, onNext, onBack }: Step3Cat
         )}
       </div>
 
-      {/* Category grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-10">
+      {/* Category list */}
+      <div className="flex flex-col gap-2.5 mb-10">
         {categories.map((cat) => {
           const isSelected = selected.includes(cat.id);
 
@@ -54,7 +54,7 @@ export function Step3Categories({ selected, onToggle, onNext, onBack }: Step3Cat
               key={cat.id}
               type="button"
               onClick={() => onToggle(cat.id)}
-              className="group text-left p-4 rounded-2xl cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7040]/60"
+              className="w-full text-left px-5 py-4 rounded-2xl cursor-pointer transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2e7040]/60"
               style={{
                 background: isSelected ? 'rgba(46,112,64,0.1)' : 'rgba(20,13,10,0.55)',
                 border: isSelected
@@ -62,59 +62,56 @@ export function Step3Categories({ selected, onToggle, onNext, onBack }: Step3Cat
                   : '1px solid rgba(255,255,255,0.06)',
                 backdropFilter: 'blur(12px)',
                 boxShadow: isSelected
-                  ? '0 0 24px rgba(46,112,64,0.15), 0 8px 24px rgba(0,0,0,0.3)'
-                  : '0 4px 16px rgba(0,0,0,0.2)',
-                transform: isSelected ? 'translateY(-2px)' : 'none',
+                  ? '0 0 24px rgba(46,112,64,0.12), 0 4px 16px rgba(0,0,0,0.2)'
+                  : '0 2px 8px rgba(0,0,0,0.15)',
               }}
             >
-              <div className="flex flex-col gap-3">
-                {/* Icon + toggle row */}
-                <div className="flex items-start justify-between">
-                  <CategoryIcon categoryId={cat.id} size="sm" />
-                  {/* Toggle pill */}
-                  <div
-                    className="relative mt-0.5"
-                    style={{
-                      width: 32,
-                      height: 18,
-                      borderRadius: 9,
-                      background: isSelected
-                        ? 'linear-gradient(90deg, #2e7040, #4ade80)'
-                        : 'rgba(255,255,255,0.08)',
-                      transition: 'all 0.2s ease',
-                      boxShadow: isSelected ? '0 0 8px rgba(46,112,64,0.5)' : 'none',
-                    }}
-                  >
-                    <div
-                      style={{
-                        position: 'absolute',
-                        top: 2,
-                        width: 14,
-                        height: 14,
-                        borderRadius: '50%',
-                        background: '#fff',
-                        transition: 'left 0.2s ease',
-                        left: isSelected ? 16 : 2,
-                        boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
-                      }}
-                    />
-                  </div>
-                </div>
+              <div className="flex items-center gap-4">
+                <CategoryIcon categoryId={cat.id} size="sm" />
 
                 {/* Text */}
-                <div>
+                <div className="flex-1 min-w-0">
                   <div
-                    className="text-sm font-semibold leading-tight mb-1 transition-colors"
+                    className="text-sm font-semibold leading-tight mb-0.5 transition-colors"
                     style={{ color: isSelected ? '#f0ece8' : 'rgba(168,144,128,0.9)' }}
                   >
-                    {cat.shortLabel}
+                    {cat.label}
                   </div>
                   <div
-                    className="text-xs leading-relaxed line-clamp-2"
-                    style={{ color: 'rgba(120,100,90,0.8)' }}
+                    className="text-xs leading-relaxed truncate"
+                    style={{ color: 'rgba(120,100,90,0.7)' }}
                   >
                     {cat.description}
                   </div>
+                </div>
+
+                {/* Toggle pill */}
+                <div
+                  className="relative flex-shrink-0"
+                  style={{
+                    width: 40,
+                    height: 22,
+                    borderRadius: 11,
+                    background: isSelected
+                      ? 'linear-gradient(90deg, #2e7040, #4ade80)'
+                      : 'rgba(255,255,255,0.08)',
+                    transition: 'all 0.2s ease',
+                    boxShadow: isSelected ? '0 0 10px rgba(46,112,64,0.5)' : 'none',
+                  }}
+                >
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 3,
+                      width: 16,
+                      height: 16,
+                      borderRadius: '50%',
+                      background: '#fff',
+                      transition: 'left 0.2s ease',
+                      left: isSelected ? 21 : 3,
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+                    }}
+                  />
                 </div>
               </div>
             </button>

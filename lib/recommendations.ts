@@ -10,23 +10,23 @@ import type {
   TechnicalMaturity,
   IndustryVertical,
   Geography,
-  DeploymentModel,
 } from '@/types';
 import { categories } from '@/data/categories';
 import { toolsById } from '@/data/tools';
 
 // ─── Dimension Weights ─────────────────────────────────────────────────────
+// Budget and deployment are no longer collected in the UI, so they are excluded
+// from scoring. Technical maturity and company size carry more weight to ensure
+// tools are properly matched to the user's team profile.
 
 const WEIGHTS = {
-  budget: 25,
-  technicalMaturity: 20,
-  companySize: 15,
-  geography: 15,
-  industry: 15,
-  deployment: 10,
+  technicalMaturity: 40,
+  companySize: 30,
+  geography: 20,
+  industry: 10,
 } as const;
 
-const DISQUALIFIER_PENALTY = -60;
+const DISQUALIFIER_PENALTY = -80;
 
 // ─── Core Scoring ──────────────────────────────────────────────────────────
 
@@ -38,14 +38,7 @@ export function scoreTool(
   let score = 0;
   const w = tool.scoringWeights;
 
-  // Budget — any selected tier must match
-  if (filters.budgetTier.length > 0) {
-    score += filters.budgetTier.some(bt => w.budgetTiers.includes(bt)) ? WEIGHTS.budget : 0;
-  } else {
-    score += WEIGHTS.budget;
-  }
-
-  // Technical maturity
+  // Technical maturity — if selected and tool doesn't support it, score 0
   if (filters.technicalMaturity.length > 0) {
     score += filters.technicalMaturity.some(tm => w.technicalMaturities.includes(tm))
       ? WEIGHTS.technicalMaturity
@@ -54,38 +47,28 @@ export function scoreTool(
     score += WEIGHTS.technicalMaturity;
   }
 
-  // Company size
+  // Company size — if selected and tool doesn't match, score 0
   if (filters.companySize.length > 0) {
     score += filters.companySize.some(cs => w.companySizes.includes(cs)) ? WEIGHTS.companySize : 0;
   } else {
     score += WEIGHTS.companySize;
   }
 
-  // Geography — disqualify only if no intersection
+  // Geography — disqualify if no intersection between user geo and tool geo
   if (filters.geography.length > 0 && w.geographies.length > 0) {
     const hasMatch = filters.geography.some(g => w.geographies.includes(g as Geography));
     score += hasMatch ? WEIGHTS.geography : DISQUALIFIER_PENALTY;
   } else {
-    // empty geographies array = fits all, or no filter selected
     score += WEIGHTS.geography;
   }
 
-  // Industry
+  // Industry — empty tool industries list means fits all
   if (filters.industryVertical.length > 0) {
     if (w.industries.length === 0 || filters.industryVertical.some(iv => w.industries.includes(iv as IndustryVertical))) {
       score += WEIGHTS.industry;
     }
   } else {
     score += WEIGHTS.industry;
-  }
-
-  // Deployment model
-  if (filters.deploymentModel.length > 0) {
-    score += filters.deploymentModel.some(dm => w.deploymentModels.includes(dm as DeploymentModel))
-      ? WEIGHTS.deployment
-      : 0;
-  } else {
-    score += WEIGHTS.deployment;
   }
 
   // Per-question bonuses
@@ -127,7 +110,9 @@ function normaliseScores(scores: Map<string, number>): Map<string, number> {
 
 // ─── Reasoning String Builder ──────────────────────────────────────────────
 
-const budgetLabels: Record<BudgetTier, string> = {
+// BudgetTier kept for type safety in case it's used elsewhere
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _budgetLabels: Record<BudgetTier, string> = {
   startup: 'startup',
   smb: 'SMB',
   midmarket: 'mid-market',
@@ -154,11 +139,6 @@ function buildReasoning(
 ): string {
   const reasons: string[] = [];
   const w = tool.scoringWeights;
-
-  const matchingBudget = filters.budgetTier.find(bt => w.budgetTiers.includes(bt));
-  if (matchingBudget) {
-    reasons.push(`well-priced for a ${budgetLabels[matchingBudget]} budget`);
-  }
 
   const matchingMaturity = filters.technicalMaturity.find(tm => w.technicalMaturities.includes(tm));
   if (matchingMaturity) {
