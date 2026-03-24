@@ -7,7 +7,7 @@ export type UserTechnicalLevel = 'non_technical' | 'semi_technical' | 'technical
 export type BudgetTier = 'startup' | 'smb' | 'midmarket' | 'enterprise';
 export type CompanySize = 'lt50' | '50to250' | '250to1000' | 'gt1000';
 export type TechnicalMaturity = 'no_dev' | 'some_dev' | 'inhouse_eng';
-export type IndustryVertical = 'sports' | 'retail' | 'b2b' | 'media' | 'charity' | 'agency';
+export type IndustryVertical = 'sports' | 'retail' | 'b2b' | 'media' | 'charity' | 'agency' | 'rights_holder' | 'fmcg' | 'financial_services' | 'healthcare' | 'technology' | 'travel';
 export type Geography = 'uk_eu' | 'us' | 'mena' | 'global';
 export type DeploymentModel = 'saas_only' | 'cloud_hosted' | 'on_premise';
 
@@ -53,12 +53,14 @@ export type QuestionType = 'single_select' | 'multi_select';
 export interface QuestionOption {
   value: string;
   label: string;
+  labelNonTechnical?: string;
 }
 
 export interface Question {
   id: string;
   categoryId: CategoryId;
   label: string;
+  labelNonTechnical?: string;
   type: QuestionType;
   options: QuestionOption[];
   // If defined, this question is skipped and auto-answered when the referenced question's answer contains one of the values

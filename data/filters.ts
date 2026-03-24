@@ -23,17 +23,23 @@ export const companySizeOptions: FilterOption<CompanySize>[] = [
 ];
 
 export const technicalMaturityOptions: FilterOption<TechnicalMaturity>[] = [
-  { value: 'no_dev', label: 'No dev resource', description: 'Marketing team manages tools' },
-  { value: 'some_dev', label: 'Some dev support', description: 'Occasional developer help' },
-  { value: 'inhouse_eng', label: 'In-house engineering', description: 'Dedicated data/eng team' },
+  { value: 'no_dev', label: 'Basic', description: 'We work with tools — no coding involved' },
+  { value: 'some_dev', label: 'Intermediate', description: 'We have some technical support available' },
+  { value: 'inhouse_eng', label: 'Strong', description: 'We have in-house engineers or a data team' },
 ];
 
 export const industryVerticalOptions: FilterOption<IndustryVertical>[] = [
   { value: 'sports', label: 'Sports' },
+  { value: 'rights_holder', label: 'Rights Holder' },
   { value: 'retail', label: 'Retail / E-commerce' },
+  { value: 'fmcg', label: 'FMCG' },
   { value: 'b2b', label: 'B2B / SaaS' },
+  { value: 'technology', label: 'Technology' },
   { value: 'media', label: 'Media / Publishing' },
+  { value: 'financial_services', label: 'Financial Services' },
+  { value: 'healthcare', label: 'Healthcare' },
   { value: 'charity', label: 'Charity / NFP' },
+  { value: 'travel', label: 'Travel & Hospitality' },
   { value: 'agency', label: 'Agency' },
 ];
 

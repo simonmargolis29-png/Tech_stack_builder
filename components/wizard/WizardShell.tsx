@@ -54,6 +54,14 @@ export function WizardShell() {
     });
   }, []);
 
+  const setSingleGlobalFilter = useCallback((key: keyof GlobalFilters, value: string) => {
+    setState(prev => {
+      const current = prev.globalFilters[key] as string[];
+      const next = current.includes(value) ? [] : [value];
+      return { ...prev, globalFilters: { ...prev.globalFilters, [key]: next } };
+    });
+  }, []);
+
   const toggleCategory = useCallback((id: CategoryId) => {
     setState((prev) => ({
       ...prev,
@@ -173,6 +181,7 @@ export function WizardShell() {
           <Step2Filters
             filters={state.globalFilters}
             onChange={toggleGlobalFilter}
+            onSingleChange={setSingleGlobalFilter}
             onNext={() => { markStepComplete(2); goToStep(3); }}
             onBack={() => goToStep(1)}
             userTechnicalLevel={state.userTechnicalLevel}

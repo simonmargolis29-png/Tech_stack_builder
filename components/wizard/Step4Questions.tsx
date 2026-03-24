@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ArrowRight, ArrowLeft, Info } from 'lucide-react';
 import type { CategoryId, CategoryAnswers, UserTechnicalLevel } from '@/types';
+import { recognisePlatform } from '@/data/platformLookup';
 import { categories } from '@/data/categories';
 import { CategoryIcon } from '@/components/ui/CategoryIcon';
 import { MultiToggleChip } from '@/components/ui/ToggleChip';
@@ -66,6 +67,7 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
   const [questionDirection, setQuestionDirection] = useState<'forward' | 'back'>('forward');
   const [animKey, setAnimKey] = useState(0);
+  const [otherText, setOtherText] = useState<Record<string, string>>({});
 
   const activeCatId = selectedCategories[activeCatIndex];
   const activeCategory = categories.find((c) => c.id === activeCatId)!;
@@ -293,7 +295,7 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
 
         {/* Question heading */}
         <h3 className="text-xl sm:text-2xl font-bold mb-1" style={{ color: '#f0ece8', letterSpacing: '-0.01em' }}>
-          {question.label}
+          {userTechnicalLevel === 'non_technical' ? (question.labelNonTechnical ?? question.label) : question.label}
         </h3>
         <p className="text-sm mb-6" style={{ color: 'rgba(168,144,128,0.6)' }}>
           {isCurrentToolsQuestion
@@ -323,16 +325,48 @@ export function Step4Questions({ selectedCategories, answers, onAnswer, onNext, 
           </div>
         ) : (
           /* Options */
-          <div className="flex flex-wrap gap-2.5">
-            {question.options.map((opt) => (
-              <MultiToggleChip
-                key={opt.value}
-                label={opt.label}
-                selected={currentAnswer.includes(opt.value)}
-                onClick={() => handleToggle(opt.value)}
-              />
-            ))}
-          </div>
+          <>
+            <div className="flex flex-wrap gap-2.5">
+              {question.options.map((opt) => (
+                <MultiToggleChip
+                  key={opt.value}
+                  label={userTechnicalLevel === 'non_technical' ? (opt.labelNonTechnical ?? opt.label) : opt.label}
+                  selected={currentAnswer.includes(opt.value)}
+                  onClick={() => handleToggle(opt.value)}
+                />
+              ))}
+            </div>
+            {currentAnswer.includes('other') && !isDontKnow && (
+              <div className="mt-3">
+                <input
+                  type="text"
+                  placeholder="Type the platform name..."
+                  value={otherText[question.id] ?? ''}
+                  onChange={e => {
+                    const val = e.target.value;
+                    setOtherText(prev => ({ ...prev, [question.id]: val }));
+                    onAnswer(activeCatId, question.id + '_other_text', val);
+                  }}
+                  className="w-full px-4 py-2.5 rounded-xl text-sm outline-none transition-all"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(46,112,64,0.3)',
+                    color: '#f0ece8',
+                  }}
+                />
+                {(() => {
+                  const match = recognisePlatform(otherText[question.id] ?? '');
+                  if (!match) return null;
+                  return (
+                    <div className="flex items-center gap-2 mt-2 px-3 py-1.5 rounded-lg" style={{ background: 'rgba(46,112,64,0.1)', border: '1px solid rgba(46,112,64,0.25)' }}>
+                      <span className="text-xs font-semibold" style={{ color: '#4ade80' }}>{match.name}</span>
+                      <span className="text-xs" style={{ color: 'rgba(140,120,110,0.8)' }}>· {match.category} — {match.description}</span>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+          </>
         )}
 
         {/* Card actions */}

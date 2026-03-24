@@ -15,6 +15,7 @@ import {
 interface Step2FiltersProps {
   filters: GlobalFilters;
   onChange: (key: keyof GlobalFilters, value: string) => void;
+  onSingleChange: (key: keyof GlobalFilters, value: string) => void;
   onNext: () => void;
   onBack: () => void;
   userTechnicalLevel: UserTechnicalLevel | null;
@@ -28,15 +29,15 @@ const TECH_LEVEL_OPTIONS: { value: UserTechnicalLevel; label: string; descriptio
 ];
 
 const FILTER_QUESTIONS = [
-  { key: 'companySize' as const,       label: 'How large is your organisation?',              subtitle: 'Select all that apply', options: companySizeOptions },
-  { key: 'technicalMaturity' as const, label: 'What is your technical capability?',           subtitle: 'Select all that apply', options: technicalMaturityOptions },
-  { key: 'industryVertical' as const,  label: 'Which industry are you in?',                   subtitle: 'Select all that apply', options: industryVerticalOptions },
-  { key: 'geography' as const,         label: 'Where do you operate?',                        subtitle: 'Select all that apply for compliance', options: geographyOptions },
+  { key: 'companySize' as const,       label: 'How large is your organisation?',        subtitle: 'Select one', options: companySizeOptions, singleSelect: true },
+  { key: 'technicalMaturity' as const, label: 'What is your technical capability?',     subtitle: 'Select one', options: technicalMaturityOptions, singleSelect: true },
+  { key: 'industryVertical' as const,  label: 'Which industry are you in?',             subtitle: 'Select all that apply', options: industryVerticalOptions },
+  { key: 'geography' as const,         label: 'Where do you operate?',                  subtitle: 'Select all that apply for compliance', options: geographyOptions },
 ] as const;
 
 const TOTAL_SLIDES = 1 + FILTER_QUESTIONS.length; // tech level + 4 filter questions
 
-export function Step2Filters({ filters, onChange, onNext, onBack, userTechnicalLevel, onSetTechnicalLevel }: Step2FiltersProps) {
+export function Step2Filters({ filters, onChange, onSingleChange, onNext, onBack, userTechnicalLevel, onSetTechnicalLevel }: Step2FiltersProps) {
   const [qIndex, setQIndex] = useState(0);
   const [direction, setDirection] = useState<'forward' | 'back'>('forward');
   const [animKey, setAnimKey] = useState(0);
@@ -201,7 +202,7 @@ export function Step2Filters({ filters, onChange, onNext, onBack, userTechnicalL
                   key={opt.value}
                   label={opt.label}
                   selected={(filters[filterQ.key] as string[]).includes(opt.value)}
-                  onClick={() => onChange(filterQ.key, opt.value)}
+                  onClick={() => ('singleSelect' in filterQ && filterQ.singleSelect) ? onSingleChange(filterQ.key, opt.value) : onChange(filterQ.key, opt.value)}
                 />
               ))}
             </div>
